@@ -1,0 +1,19 @@
+# --- Java & Maven ---
+target/
+*.class
+*.jar
+*.war
+
+# --- IDEs (IntelliJ, VS Code, Eclipse) ---
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+.DS_Store
+Thumbs.db
+
+# --- Logs & Temp ---
+*.log
+temp/
