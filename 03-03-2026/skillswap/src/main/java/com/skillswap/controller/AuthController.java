@@ -5,9 +5,10 @@ import com.skillswap.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping; // Ajouté pour le logout
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes; // Indispensable pour les messages
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AuthController {
@@ -19,11 +20,18 @@ public class AuthController {
     public String login(@RequestParam String email, 
                         @RequestParam String password, 
                         HttpSession session,
-                        RedirectAttributes redirectAttributes) { // Ajouté pour les notifications
+                        RedirectAttributes redirectAttributes) {
         
         // 1. On cherche l'utilisateur par son email et mot de passe
-        // Note : On cherche par email et mot de passe pour mieux gérer les messages d'erreur après
         User user = userRepository.findByEmailAndPassword(email, password).orElse(null);
+
+        System.out.println("Recherche de l'utilisateur...");
+        user = userRepository.findByEmailAndPassword(email, password).orElse(null);
+        if (user != null) {
+            System.out.println("Utilisateur trouvé ! Nom : " + user.getNom());
+        } else {
+            System.out.println("Utilisateur NON trouvé dans la base.");
+        }
 
         // 2. Vérification de l'existence et du mot de passe
         if (user != null && user.getPassword().equals(password)) {
@@ -49,5 +57,18 @@ public class AuthController {
 
         // Si l'email n'existe pas ou le mot de passe est faux
         return "redirect:/login?error=true";
+    }
+
+    // --- NOUVELLE MÉTHODE AJOUTÉE SANS RIEN SUPPRIMER ---
+    
+    @GetMapping("/logout")
+    public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
+        // Supprime l'utilisateur de la session
+        session.invalidate(); 
+        
+        // Ajoute un petit message pour confirmer la déconnexion
+        redirectAttributes.addFlashAttribute("logoutMsg", "Vous avez été déconnecté avec succès.");
+        
+        return "redirect:/login";
     }
 }

@@ -17,6 +17,6 @@ public class User {
     private String password;
     private String role; // 'STUDENT' ou 'ADMIN'
 
-    @Column(name = "is_active")
+    @Column(name = "is_active") // Force Java à chercher exactement ce nom-là en BDD
     private boolean isActive;
 }

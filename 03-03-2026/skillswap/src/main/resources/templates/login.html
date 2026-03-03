@@ -27,6 +27,9 @@
     </div>
     <div class="form-container sign-in">
         <form th:action="@{/login}" method="post">
+            <div th:if="${param.error}" style="color: white; background-color: #e74c3c; padding: 15px; border-radius: 5px; margin-bottom: 20px; text-align: center; font-family: sans-serif;">
+                Email ou mot de passe incorrect. Veuillez réessayer.
+            </div>
             <h1>Se connecter</h1>
             <div class="social-container">
                 <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
